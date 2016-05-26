@@ -3,6 +3,9 @@
  * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
+.btn{
+  margin:10px 10px 10px 0;
+}
 .btn-default,
 .btn-primary,
 .btn-success,
@@ -186,6 +189,9 @@ fieldset[disabled] .btn-success.active {
   background-color: #419641;
   background-image: none;
 }
+
+/*border-color:rgba(76,38,78,.43)!important;background:rgba(110,54,113,.43)!important;color:#fff*/
+
 .btn-info {
   background-image: -webkit-linear-gradient(top, #5bc0de 0%, #2aabd2 100%);
   background-image:      -o-linear-gradient(top, #5bc0de 0%, #2aabd2 100%);

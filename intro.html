@@ -4,10 +4,6 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Jose Tirado">
     <meta property="og:url" content="https://aprender-git.com">
     <meta property="og:site_name" content="Aprende a usar Git">
@@ -17,31 +13,68 @@
     <title>Apende a usar Git</title>
     <link rel="icon" type="image/png" href="images/favicon.ico" />
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/intro-style.css">
+
+    <!-- ESTILOS DE BOOTSTRAP -->
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!-- JQUERY -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <script type="text/javascript">
+      window.onresize = function (event) {
+        applyOrientation();
+      }
+
+      function applyOrientation() {
+        if (window.innerHeight < 400 || window.innerWidth < 769) {
+          $('#widget2').hide();
+          $('.btn-warning').hide();
+        } else {
+          $('#widget2').show();
+          $('.btn-warning').show();
+        }
+      }
+    </script>
+
+    <!-- JAVASCRIPT DE BOOTSTRAP -->
+    <script src="js/bootstrap.js"></script>
+    <script src="js/bootstrap.min.js"></script>
   </head>
-  <body>
-    <a class="btn btn-warning btn-lg" href="javascript:void(0);">Ver Video</a>
-    <a href="javascript:void(0);" class="btn bg-color-magenta txt-color-white">.bg-color-magenta</a>
-    <div class="gradient">
-      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%">
-        <defs>
-          <linearGradient id="fade" y2="1" x2="0">
-            <stop offset="0" stop-color="white" stop-opacity="0"></stop>
-            <stop offset="1" stop-color="white" stop-opacity="1"></stop>
-          </linearGradient>
-          <linearGradient id="gradient" y2="0" x2="1">
-            <stop offset="0" stop-color="#00bcd4" stop-opacity="1"></stop>
-            <stop offset="1" stop-color="#e91e63" stop-opacity="1"></stop>
-          </linearGradient>
-          <mask id="mask" maskContentUnits="objectBoundingBox">
-            <rect width="1" height="1" fill="url(#fade)"></rect>
-          </mask>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#gradient)" mask="url(#mask)"></rect>
-      </svg>
+  <body onload="applyOrientation()">
+    <div class="container-fluid">
+      <div id="video" class="video" style="z-index:1;width:100%;height:100%;overflow:hidden;">
+        <iframe data-src="http://www.youtube.com/embed/vq2jYFZVMDA?autoplay=1&amp;controls=0&amp;disablekb=1&amp;iv_load_policy=3&amp;loop=1&amp;modestbranding=1&amp;enablejsapi=1&amp;showinfo=0&amp;playlist=vq2jYFZVMDA&amp;html5=1&amp;VQ=HD1080" frameborder="0" class="" src="http://www.youtube.com/embed/vq2jYFZVMDA?autoplay=1&amp;controls=0&amp;disablekb=1&amp;iv_load_policy=3&amp;loop=1&amp;modestbranding=1&amp;enablejsapi=1&amp;showinfo=0&amp;playlist=vq2jYFZVMDA&amp;html5=1&amp;VQ=HD1080" volume="0" id="widget2"></iframe>
+      </div>
+      <div class="gradient">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%">
+          <defs>
+            <linearGradient id="fade" y2="1" x2="0">
+              <stop offset="0" stop-color="white" stop-opacity="0"></stop>
+              <stop offset="1" stop-color="white" stop-opacity="1"></stop>
+            </linearGradient>
+            <linearGradient id="gradient" y2="0" x2="1">
+              <stop offset="0" stop-color="#ec971f" stop-opacity="1"></stop>
+              <stop offset="1" stop-color="#31b0d5" stop-opacity="1"></stop>
+            </linearGradient>
+            <mask id="mask" maskContentUnits="objectBoundingBox">
+              <rect width="1" height="1" fill="url(#fade)"></rect>
+            </mask>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#gradient)" mask="url(#mask)"></rect>
+        </svg>
+      </div>
+      <div class="row">
+        <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+          <h1>Aprende rapido y eficaz</h1>
+          <h3>Bienvenidos a la aplicacion web que pretende crear una simulacion real del terminal para que aprendas paso a paso con nuestro tutorial a usar Git. Bienvenidos a Aprende a usar Git.</h3>
+          <a class="btn btn-warning btn-lg" style="z-index:4;" href="https://www.youtube.com/watch?v=vq2jYFZVMDA/" target="_blank">Ver el Video</a>
+          <a class="btn btn-info btn-lg" style="z-index:4;" href="index.html">Ir al Tutorial</a>
+        </div>
+      </div>
     </div>
   </body>
 </html>
