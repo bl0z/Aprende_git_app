@@ -15,10 +15,10 @@ $(".panel").on('keypress', ".in", function(e) {
 
 function execute(command, parameter1, parameter2, parameter3, parameter4) {
   console.log(command, parameter1, parameter2, parameter3, parameter4);
-  parameter1 = parameter1 || ""
-  parameter2 = parameter2 || ""
-  parameter3 = parameter3 || ""
-  parameter4 = parameter4 || ""
+  parameter1 = parameter1 || "";
+  parameter2 = parameter2 || "";
+  parameter3 = parameter3 || "";
+  parameter4 = parameter4 || "";
   if (window[command]) {
     return window[command](parameter1, parameter2, parameter3, parameter4);
   } else {
@@ -28,17 +28,13 @@ function execute(command, parameter1, parameter2, parameter3, parameter4) {
 
 files = {
   "root": {
-    "aboutme.txt": "-Get new shell, -Buy Milk",
-    "passwords.txt": "gmail: p@ssword, reddit: hunter2",
-    "projects": {
-      "bio.txt": "cells organisms",
-      "chem.txt": "ions protons"
-    }
+    "readme.txt": "-Proyecto realizado por Jose Tirado para el IES El Majuelo.",
   }
 }
 
-var step = 1
-var currentBranch = "Master"
+var step = 1;
+var currentBranch = "master";
+var doCommit = false;
 
 var upperFolder = null;
 var currentFolder = files["root"];
@@ -61,7 +57,7 @@ function cat(filename) {
     return "usage: cat file ...";
   }
   if (typeof currentFolder[filename] == "object") {
-    return "cat: " + filename + " : Is a directory"
+    return "cat: " + filename + " : Is a directory";
 
   }
   if (currentFolder[filename] == "") {
@@ -70,7 +66,7 @@ function cat(filename) {
   if (currentFolder[filename]) {
     return currentFolder[filename];
   } else {
-    return "cat: " + filename + " : No such file or directory"
+    return "cat: " + filename + " : No such file or directory";
   }
 }
 
@@ -132,21 +128,41 @@ function git(mod, mod2, mod3, mod4) {
   mod3 = mod3 || "";
   mod4 = mod4 || "";
 
-  alert(window.location.href.substring(44));
-
   switch(mod) {
     case "init":
-        if(window.location.href.substring(46) == "1" || window.location.href.substring(46) == "") {
-          redireccionar();
-          return "Initialized empty Git repository in /.git/<br /><br /><p class='success'>Sucess</p>";
-        }
+      if(window.location.href.substring(46) == "1" || window.location.href.substring(46) == "") {
+        redireccionar();
+        return "Initialized empty Git repository in /.git/<br />";
+      }
+      break;
     case "status":
-        if(window.location.href.substring(46) == "2") {
-          redireccionar();
-          return "# On branch master<br/ ># Initial commit <br /># nothing to commit (create/copy files and use 'git add' to track)";
+      if(window.location.href.substring(46) < 2) {
+        return "fatal: Not a git repository (or any of the parent directories): .git<br />"
+      } else if(window.location.href.substring(46) == 2 || window.location.href.substring(46) == 3) {
+        redireccionar();
+        if(doCommit == false){
+          var return_string = "On branch "+currentBranch+"<br />nothing to commit (create/copy files and use 'git add' to track)<br />";
+          doCommit = true;
+        } else {
+          var return_string = "On branch "+currentBranch+"<br />Untracked files:<br />&nbsp;&nbsp;(use 'git add <file>...' to include in what will be committed)<br /><br /><p class='text-red'>miFichero.txt</p><br />no changes added to commit (use 'git add' and/or 'git commit -a')<br />";
         }
+        return return_string;
+      }
+      break;
+    case "add":
+      if(window.location.href.substring(46) == 4) {
+        if(mod2 == "miFichero.txt" || mod2 == "*") {
+          redireccionar();
+          mkdir(mod2);
+          return "";
+        } else {
+          return "fatal: pathspec 'octodog.txt' did not match any files<br />";
+        }
+      } else {
+        
+      }
     default:
-        break;
+      break;
   }
 }
 

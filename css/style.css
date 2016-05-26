@@ -26,10 +26,15 @@ code {
     color:#5bc0de;
     font-weight:700;
 }
-.success{
+.msg {
     font-size:16px;
     color:#64c53d;
     padding-left:15px;
+}
+.text-red {
+    font-size:16px;
+    color:#ff0000;
+    padding-left:30px;
 }
 .header-bar {
     width:100%;
@@ -108,6 +113,8 @@ h1{
     background:#33c748;
 }
 .panel {
+    font-family:Arial;
+    font-size:16px;
     height:260px;
     background:#27292c;
     padding:20px;
