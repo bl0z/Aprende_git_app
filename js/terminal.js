@@ -37,7 +37,7 @@ files = {
   }
 }
 
-var test = 1
+var step = 1
 var currentBranch = "Master"
 
 var upperFolder = null;
@@ -131,15 +131,35 @@ function git(mod, mod2, mod3, mod4) {
   mod2 = mod2 || "";
   mod3 = mod3 || "";
   mod4 = mod4 || "";
-  if(mod2 == "-r")
-    return document.location.href='http://localhost/terminal_project/index.html#/26';
-  redireccionar();
-  return window.location.href;
+
+  alert(window.location.href.substring(44));
+
+  switch(mod) {
+    case "init":
+        if(window.location.href.substring(46) == "1" || window.location.href.substring(46) == "") {
+          redireccionar();
+          return "Initialized empty Git repository in /.git/<br /><br /><p class='success'>Sucess</p>";
+        }
+    case "status":
+        if(window.location.href.substring(46) == "2") {
+          redireccionar();
+          return "# On branch master<br/ ># Initial commit <br /># nothing to commit (create/copy files and use 'git add' to track)";
+        }
+    default:
+        break;
+  }
 }
 
+
+
+  // if(mod2 == "-r")
+  //   return document.location.href='http://localhost/terminal_project/index.html#/26';
+  // redireccionar();
+  // return window.location.href;
+
 function redireccionar() {
-  test++;
-  document.location.href='http://localhost/terminal_project/index.html#/'+test;
+  step++;
+  document.location.href='http://localhost/terminal_project/index.html#/'+step;
 }
 
 /* END GIT EVENTS */
