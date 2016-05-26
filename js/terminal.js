@@ -186,7 +186,8 @@ function git(mod, mod2, mod3, mod4) {
         if(mod2 == "-m" && mod3 != ""){
           nextStep();
           add_commit(mod3);
-          var key = (function co(lor){   return (lor += [0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f'][Math.floor(Math.random()*16)]) && (lor.length == 8) ?  lor : co(lor); })('');
+          // Generates a 7 digit Key in Hexadecimal
+          var key = (function key(gen){   return (gen += [0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f'][Math.floor(Math.random()*16)]) && (gen.length == 7) ?  gen : key(gen); })('');
           add_commit_code(key);
           return "["+currentBranch+" "+key+"]<br /> 4 files changed, 4 insertions(+)<br /> create mode 100644 fichero1.txt<br /> create mode 100644 fichero2.txt<br /> create mode 100644 fichero3.txt<br /> create mode 100644 fichero4.txt"
         } else {
