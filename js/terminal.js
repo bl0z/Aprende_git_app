@@ -30,14 +30,17 @@ files = {
   "root": {
     "readme.txt": "-Proyecto realizado por Jose Tirado para el IES El Majuelo.",
   }
-}
+};
+
+commits = [];
+commit_codes = [];
 
 var step = 1;
 var currentBranch = "master";
-var doCommit = false;
 
 var upperFolder = null;
 var currentFolder = files["root"];
+
 var path = [];
 
 
@@ -131,49 +134,88 @@ function git(mod, mod2, mod3, mod4) {
   switch(mod) {
     case "init":
       if(window.location.href.substring(46) == "1" || window.location.href.substring(46) == "") {
-        redireccionar();
+        nextStep();
         return "Initialized empty Git repository in /.git/<br />";
+      } else {
+        return "Reinitialized existing Git repository in /.git/";
       }
       break;
     case "status":
       if(window.location.href.substring(46) < 2) {
-        return "fatal: Not a git repository (or any of the parent directories): .git<br />"
-      } else if(window.location.href.substring(46) == 2 || window.location.href.substring(46) == 3) {
-        redireccionar();
-        if(doCommit == false){
-          var return_string = "On branch "+currentBranch+"<br />nothing to commit (create/copy files and use 'git add' to track)<br />";
-          doCommit = true;
-        } else {
-          var return_string = "On branch "+currentBranch+"<br />Untracked files:<br />&nbsp;&nbsp;(use 'git add <file>...' to include in what will be committed)<br /><br /><p class='text-red'>miFichero.txt</p><br />no changes added to commit (use 'git add' and/or 'git commit -a')<br />";
-        }
-        return return_string;
+        return "fatal: Not a git repository (or any of the parent directories): .git"
+      } else if(window.location.href.substring(46) == 2) {
+        nextStep();
+        return "On branch "+currentBranch+"<br />nothing to commit (create/copy files and use 'git add' to track)";
+      } else if (window.location.href.substring(46) == 3) {
+        nextStep();
+        return "On branch "+currentBranch+"<br />Untracked files:<br />&nbsp;&nbsp;(use 'git add <file>...' to include in what will be committed)<br /><p class='text-red'>test</p>no changes added to commit (use 'git add' and/or 'git commit -a')";
+      } else if (window.location.href.substring(46) == 5){
+        nextStep();
+        return "On branch "+currentBranch+"<br />Changes to be committed:<br /><p class='text-green'>modified:&nbsp;&nbsp;&nbsp;miFichero.txt</p>";
       }
       break;
     case "add":
       if(window.location.href.substring(46) == 4) {
-        if(mod2 == "miFichero.txt" || mod2 == "*") {
-          redireccionar();
-          mkdir(mod2);
+        if(mod2 == "miPrimerFichero.txt") {
+          nextStep();
+          add_file(mod2, "Este es el fichero miPrimerFichero.txt");
           return "";
         } else {
-          return "fatal: pathspec 'octodog.txt' did not match any files<br />";
+          return "fatal: pathspec "+mod2+" did not match any files";
+        }
+      } else if(window.location.href.substring(46) == 7){
+        if(mod2 == "*" || mod2 == "'*.txt'"){
+          nextStep();
+          add_file("fichero1.txt", "Este es el primer fichero.");
+          add_file("fichero2.txt", "Este es el segundo fichero.");
+          add_file("fichero3.txt", "Este es el tercero fichero.");
+          add_file("fichero4.txt", "Este es el cuarto fichero.");
+          return "";
+        } else {
+          return "fatal: pathspec "+mod2+" did not match any files";
+        }
+      }
+      return "";
+    case "commit":
+      if(window.location.href.substring(46) == 6){
+        if(mod2 == "-m" && mod3 != ""){
+          nextStep();
+          add_commit(mod3);
+        }
+      } else if(window.location.href.substring(46) == 8) {
+        if(mod2 == "-m" && mod3 != ""){
+          nextStep();
+          add_commit(mod3);
+          var key = generateKey();
+          add_commit_code(key);
+          return "["+currentBranch+" "+key+"]<br /> 4 files changed, 4 insertions(+)<br /> create mode 100644 fichero1.txt<br /> create mode 100644 fichero2.txt<br /> create mode 100644 fichero3.txt<br /> create mode 100644 fichero4.txt"
+        } else {
+          return "Please, use 'git commit -m <comment>' instead of does not use modifier";
         }
       } else {
-        
+        return "On branch "+currentBranch+"<br />no changes added to commit";
       }
     default:
       break;
   }
 }
-
-
-
-  // if(mod2 == "-r")
-  //   return document.location.href='http://localhost/terminal_project/index.html#/26';
-  // redireccionar();
-  // return window.location.href;
-
-function redireccionar() {
+function generateKey(){
+  var key = "";
+  var codes = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"];
+  
+  // Generate and return HEX code
+  return "".concat(codes[Math.floor(Math.random() * 16)], codes[Math.floor(Math.random() * 16)], codes[Math.floor(Math.random() * 16)], codes[Math.floor(Math.random() * 16)], codes[Math.floor(Math.random() * 16)], codes[Math.floor(Math.random() * 16)], codes[Math.floor(Math.random() * 16)]);
+}
+function add_file(filename, filecontent){
+  currentFolder[filename] = filecontent;
+}
+function add_commit(msg){
+  commits.push(msg);
+}
+function add_commit_code(key){
+  commit_codes.push(key);
+}
+function nextStep() {
   step++;
   document.location.href='http://localhost/terminal_project/index.html#/'+step;
 }
