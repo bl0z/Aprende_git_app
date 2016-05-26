@@ -1,38 +1,31 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Jose Tirado">
+    <meta property="og:url" content="https://aprender-git.com">
+    <meta property="og:site_name" content="Aprende a usar Git">
+    <meta property="og:title" content="Aprendizaje rápido y eficaz">
+    <meta property="og:description" content="Aprende a usar Git es una aplicación web donde los españoles podrán aprender a usar de manera rápida y eficaz a usar Git desde el terminal.">
+
     <title>Apende a usar Git</title>
     <link rel="icon" type="image/png" href="images/favicon.ico" />
 
-    <!-- Custom CSS for the application -->
+    <!-- Estilos -->
     <link rel="stylesheet" href="css/style.css">
 
-    <!-- AngularJS dependencies -->
+    <!-- Dependencias de AngularJS -->
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.3/angular-route.min.js"></script>
 
-    <!-- Bootstrap 3 imports -->
-      <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script> -->
-
-    <!-- Custom JS for the application -->
+    <!-- Javascript -->
     <script src="js/script.js"></script>
   </head>
   <body ng-app="git-app">
     <div ng-controller="cfgController">
       <div class="header-bar"></div>
-      <!-- <div>
-        <nav>
-          <ul>
-            <li><a href="#/">Home</a></li>
-            <li><a href="#/about">About us</a></li>
-          </ul>
-        </nav>
-      </div>
-      <br/> -->
-
       <div ng-view id="dynamic-content"></div>
       <br />
       <div class="content">
@@ -62,7 +55,6 @@
         </div>
       </div>
     </div>
-
     <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
     <script src="js/terminal.js"></script>
   </body>
