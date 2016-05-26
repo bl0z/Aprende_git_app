@@ -156,15 +156,15 @@ function git(mod, mod2, mod3, mod4) {
       break;
     case "add":
       if(window.location.href.substring(46) == 4) {
-        if(mod2 == "miPrimerFichero.txt") {
+        if(mod2 == "'miPrimerFichero.txt'" || mod2 == "*") {
           nextStep();
-          add_file(mod2, "Este es el fichero miPrimerFichero.txt");
+          add_file("miPrimerFichero.txt", "Este es el fichero miPrimerFichero.txt");
           return "";
         } else {
           return "fatal: pathspec "+mod2+" did not match any files";
         }
       } else if(window.location.href.substring(46) == 7){
-        if(mod2 == "*" || mod2 == "'*.txt'"){
+        if(mod2 == "'*.txt'" || mod2 == "*"){
           nextStep();
           add_file("fichero1.txt", "Este es el primer fichero.");
           add_file("fichero2.txt", "Este es el segundo fichero.");
@@ -186,7 +186,7 @@ function git(mod, mod2, mod3, mod4) {
         if(mod2 == "-m" && mod3 != ""){
           nextStep();
           add_commit(mod3);
-          var key = generateKey();
+          var key = (function co(lor){   return (lor += [0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f'][Math.floor(Math.random()*16)]) && (lor.length == 8) ?  lor : co(lor); })('');
           add_commit_code(key);
           return "["+currentBranch+" "+key+"]<br /> 4 files changed, 4 insertions(+)<br /> create mode 100644 fichero1.txt<br /> create mode 100644 fichero2.txt<br /> create mode 100644 fichero3.txt<br /> create mode 100644 fichero4.txt"
         } else {
@@ -198,13 +198,6 @@ function git(mod, mod2, mod3, mod4) {
     default:
       break;
   }
-}
-function generateKey(){
-  var key = "";
-  var codes = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"];
-  
-  // Generate and return HEX code
-  return "".concat(codes[Math.floor(Math.random() * 16)], codes[Math.floor(Math.random() * 16)], codes[Math.floor(Math.random() * 16)], codes[Math.floor(Math.random() * 16)], codes[Math.floor(Math.random() * 16)], codes[Math.floor(Math.random() * 16)], codes[Math.floor(Math.random() * 16)]);
 }
 function add_file(filename, filecontent){
   currentFolder[filename] = filecontent;
