@@ -19,52 +19,46 @@ files = { "root": { "readme.txt": "-Proyecto realizado por Jose Tirado para el I
 commits = [];
 commit_codes = [];
 var step = 1;
+var pushOn = false;
 var currentBranch = "master";
-var remoteBranch = ""
+var remoteBranch = "";
 var upperFolder = null;
 var currentFolder = files["root"];
 var path = [];
 
 
 function execute(command, parameter1, parameter2, parameter3, parameter4) {
-  console.log(command, parameter1, parameter2, parameter3, parameter4);
+  // console.log(command, parameter1, parameter2, parameter3, parameter4);
   parameter1 = parameter1 || "";
   parameter2 = parameter2 || "";
   parameter3 = parameter3 || "";
   parameter4 = parameter4 || "";
-  if (window[command]) {
-    return window[command](parameter1, parameter2, parameter3, parameter4);
-  } else {
-    return command + ": command not found";
-  }
+  if(command != "cd" || command != "mkdir" || command != "touch" || command != "rm" || command != "pwd")
+    if(window[command]) 
+      return window[command](parameter1, parameter2, parameter3, parameter4);
+  return command + ": command not found";
 }
 
 /* TERMINAL EVENTS */
 function ls() {
   var keys = [];
   for (var key in currentFolder) {
-    if (currentFolder.hasOwnProperty(key)) { //to be safe
+    if (currentFolder.hasOwnProperty(key))
       keys.push(key);
-    }
   }
   return keys.join(" ");
 }
 function cat(filename) {
-  if (filename == "") {
+  if (filename == "")
     return "usage: cat file ...";
-  }
-  if (typeof currentFolder[filename] == "object") {
+  else if (typeof currentFolder[filename] == "object")
     return "cat: " + filename + " : Is a directory";
-
-  }
-  if (currentFolder[filename] == "") {
+  else if (currentFolder[filename] == "")
     return "";
-  }
-  if (currentFolder[filename]) {
+  else if (currentFolder[filename])
     return currentFolder[filename];
-  } else {
+  else
     return "cat: " + filename + " : No such file or directory";
-  }
 }
 function cd(folder) {
   if (folder == "") {
@@ -79,17 +73,15 @@ function cd(folder) {
     upperFolder = currentFolder;
     currentFolder = currentFolder[folder];
     path.push(folder);
-  } else {
+  } else
     return "cd: " + folder + ": No such file or directory";
-  }
 }
 function mkdir(folderName) {
   if (folderName != "") {
     currentFolder[folderName] = {};
     return "";
-  } else {
+  } else
     return "usage: mkdir directory ...";
-  }
 }
 function touch(fileName) {
   currentFolder[fileName] = "";
@@ -104,13 +96,12 @@ function help() {
   return "Commands: ls, cd, mkdir, echo, touch, rm, cat, pwd, help";
 }
 function pwd() {
-  if (path.length == 0) {
+  if (path.length == 0)
     return "/";
-  }
   return "/" + path.join("/");
 }
-
 /* END TERMINAL EVENTS */
+
 /* GIT EVENTS */
 function git(mod, mod2, mod3, mod4) {
   mod = mod || "";
@@ -123,14 +114,12 @@ function git(mod, mod2, mod3, mod4) {
       if(window.location.href.slice(-2) == 1) {
         nextStep();
         return "Initialized empty Git repository in /.git/<br />";
-      } else {
+      } else
         return "Reinitialized existing Git repository in /.git/";
-      }
-      break;
     case "status":
-      if(window.location.href.slice(-2) == 1) {
+      if(window.location.href.slice(-2) == 1)
         return "fatal: Not a git repository (or any of the parent directories): .git"
-      } else if(window.location.href.slice(-2) == 2) {
+      else if(window.location.href.slice(-2) == 2) {
         nextStep();
         return "On branch "+currentBranch+"<br />nothing to commit (create/copy files and use 'git add' to track)";
       } else if (window.location.href.slice(-2) <= 4) {
@@ -151,9 +140,8 @@ function git(mod, mod2, mod3, mod4) {
           nextStep();
           add_file("holamundo.txt", "Hola mundo!");
           return "";
-        } else {
+        } else
           return "fatal: pathspec "+mod2.substring(1, mod2.length-1)+" did not match any files";
-        }
       } else if(window.location.href.slice(-2) == 7) {
         if(mod2 == "*.txt" || mod2 == "*") {
           nextStep();
@@ -162,9 +150,8 @@ function git(mod, mod2, mod3, mod4) {
           add_file("fichero3.txt", "Este es el tercero fichero.");
           add_file("fichero4.txt", "Este es el cuarto fichero.");
           return "";
-        } else {
+        } else
           return "fatal: pathspec " + mod2 + " did not match any files";
-        }
       }
       return "";
     case "commit":
@@ -201,16 +188,56 @@ function git(mod, mod2, mod3, mod4) {
             if(mod4 == "http://www.github.com/test/test.git") {
               nextStep();
               remoteBranch = mod3;
-            } else {
+            } else
               return "This repository does not exist";
-            }
-          } else {
+          } else
             return "Local repository must be named"
+        } else
+          return mod2 + ": subcommand not found"
+      }
+      return "";
+    case "pull": /* COMPROBAR en LIVE */
+      if(mod2 == remoteBranch) {
+        if(mod3 == currentBranch) {
+          if(window.location.href.slice(-2) == 11) {
+            nextStep();
+            return "Updating<br /> Fast-forward<br />&nbsp;fichero5.txt&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;<color='green'>+</span><br />&nbsp;1 file changed, 1 insertion(+)<br />&nbsp;create mode 100644 fichero5.txt"; 
+          } else {
+            /* COMPROBAR */
           }
         } else {
-          return mod2 + ": subcommand not found"
+          /* Si no es "MASTER" */
         }
+      } else {
+        /* Si no es "ORIGIN" */
       }
+    case "push": /* COMPROBAR en LIVE */
+      if(mod2 == "-u") {
+        if(mod3 == remoteBranch) {
+          if(mod4 == currentBranch) {
+            if(window.location.href.slice(-2) == 12) {
+              nextStep();
+              pushOn = true;
+              return "branch " + currentBranch + " set up to track remote branch " + currentBranch + " from " + remoteBranch; 
+            } else {
+              /* COMPROBAR */
+            }
+          } else {
+            /* Si no es "MASTER" */
+          }
+        } else {
+          /* Si no es "ORIGIN" */
+        }
+      } else if (mod2 == "" && pushOn == true)
+        return "To https://github.com/test/test.git <br />" + commits[commits.length-1].substring(0, 7) + ".." + commits[commits.length-1].slice(-7) + "&nbsp;&nbsp;" + currentBranch + " -&gt; " + currentBranch;
+      } else {
+        return mod2 + ": subcommand not found";
+      }
+    case "rm": /*COMPROBAR en LIVE */
+      if(window.location.href.slice(-2) == 12)
+        nextStep();
+      rm(mod2);
+      return "rm applied";
     default:
       break;
   }
