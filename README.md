@@ -41,3 +41,6 @@ git checkout nombrebranch
 
 # Para actualizar un branch desde otro
 git merge nombredeotrobranch
+
+#Controlar conflictos:
+git merge --abort

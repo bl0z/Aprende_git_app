@@ -20,6 +20,7 @@ commits = [];
 commit_codes = [];
 var step = 1;
 var currentBranch = "master";
+var remoteBranch = ""
 var upperFolder = null;
 var currentFolder = files["root"];
 var path = [];
@@ -132,7 +133,7 @@ function git(mod, mod2, mod3, mod4) {
       } else if(window.location.href.slice(-2) == 2) {
         nextStep();
         return "On branch "+currentBranch+"<br />nothing to commit (create/copy files and use 'git add' to track)";
-      } else if (window.location.href.slice(-2) == 3) {
+      } else if (window.location.href.slice(-2) <= 4) {
         nextStep();
         return "On branch "+currentBranch+"<br />Untracked files:<br />&nbsp;&nbsp;(use 'git add <file>...' to include in what will be committed)<br /><p class='text-red'>test</p>no changes added to commit (use 'git add' and/or 'git commit -a')";
       } else if (window.location.href.slice(-2) == 5) {
@@ -142,9 +143,13 @@ function git(mod, mod2, mod3, mod4) {
       break;
     case "add":
       if(window.location.href.slice(-2) == 4) {
+        if (mod2.substring(0, 1) == '"' && mod2.slice(-1) == '"' || mod2.substring(0, 1) == "'" && mod2.slice(-1) == '"')
+          mod2 = mod2.substring(1, mod2.length-1);
+        else
+          return "Use quote marks to envolve the filename";
         if(mod2 == "holamundo.txt" || mod2 == "*") {
           nextStep();
-          add_file(mod2, "Hola mundo!");
+          add_file("holamundo.txt", "Hola mundo!");
           return "";
         } else {
           return "fatal: pathspec "+mod2.substring(1, mod2.length-1)+" did not match any files";
@@ -163,39 +168,48 @@ function git(mod, mod2, mod3, mod4) {
       }
       return "";
     case "commit":
-      mod3 = mod3.substring(1, mod3.length-1);
+      if (mod3.substring(0, 1) == '"' && mod3.slice(-1) == '"' || mod3.substring(0, 1) == "'" && mod3.slice(-1) == '"')
+        mod3 = mod3.substring(1, mod3.length-1);
+      else
+        return "Use quote marks to envolve the comment of the commit";
+      if (mod2 == "-m")
+        return mod2 + ": subcommand not found";
+      if (mod3 == "")
+        return "missing comment";
       if(window.location.href.slice(-2) == 6) {
-        if(mod2 == "-m" && mod3 != "") {
-          nextStep();
-          // Generates a 7 digit Key in Hexadecimal
-          var key = (function key(gen){ return (gen += [0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f'][Math.floor(Math.random()*16)]) && (gen.length == 40) ?  gen : key(gen); })('');
-          add_commit(mod3, key);
-          return "["+currentBranch+" "+key.substring(0, 7)+"]<br />&nbsp;1 file changed, 1 insertion(+)<br />&nbsp;create mode 100644 fichero1.txt"
-        }
+        nextStep();
+        // Generates a 7 digit Key in Hexadecimal
+        var key = (function key(gen){ return (gen += [0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f'][Math.floor(Math.random()*16)]) && (gen.length == 40) ?  gen : key(gen); })('');
+        add_commit(mod3, key);
+        return "["+currentBranch+" "+key.substring(0, 7)+"]<br />&nbsp;1 file changed, 1 insertion(+)<br />&nbsp;create mode 100644 fichero1.txt"
       } else if(window.location.href.slice(-2) == 8) {
-        if(mod2 == "-m" && mod3 != ""){
-          nextStep();
-          // Generates a 7 digit Key in Hexadecimal
-          var key = (function key(gen){ return (gen += [0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f'][Math.floor(Math.random()*16)]) && (gen.length == 40) ?  gen : key(gen); })('');
-          add_commit(mod3, key);
-          // add_commit_code(key);
-          return "["+currentBranch+" "+key.substring(0, 7)+"]<br />&nbsp;4 files changed, 4 insertions(+)<br />&nbsp;create mode 100644 fichero1.txt<br />&nbsp;create mode 100644 fichero2.txt<br />&nbsp;create mode 100644 fichero3.txt<br />&nbsp;create mode 100644 fichero4.txt"
-        } else {
-          return "Please, use 'git commit -m <comment>' instead of does not use modifier";
-        }
+        nextStep();
+        // Generates a 7 digit Key in Hexadecimal
+        var key = (function key(gen){ return (gen += [0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f'][Math.floor(Math.random()*16)]) && (gen.length == 40) ?  gen : key(gen); })('');
+        add_commit(mod3, key);
+        // add_commit_code(key);
+        return "["+currentBranch+" "+key.substring(0, 7)+"]<br />&nbsp;4 files changed, 4 insertions(+)<br />&nbsp;create mode 100644 fichero1.txt<br />&nbsp;create mode 100644 fichero2.txt<br />&nbsp;create mode 100644 fichero3.txt<br />&nbsp;create mode 100644 fichero4.txt"
       }
       return "On branch "+currentBranch+"<br />no changes added to commit";
     case "log":
-      alert(show_log());
+      if(window.location.href.slice(-2) == 9)
+        nextStep();
       return show_log();
+    case "remote":
+      if(window.location.href.slice(-2) == 10) {
+        if(mod2 == "add" && mod3 != "" && mod4 == "http://www.github.com/test/test.git") {
+          nextStep();
+          remoteBranch = mod3;
+        }
+      }
     default:
       break;
   }
 }
-function show_log(){
+function show_log() {
   var log_string = "";
-  for(i = 0; i < commits.length; i+=3) {
-    log_string+=("<p class='text-yellow'>commit "+commits[i+1]+"</p>Author:&nbsp;You &lt;your@email.com&gt;<br />Date:&nbsp;&nbsp;&nbsp;&nbsp;"+commits[i+2]+"<br /><p style='padding-left:30px'>"+commits[i]+"</p>");
+  for(i = 0; i < commits.length; i += 3) {
+    log_string += ("<p class='text-yellow'>commit "+commits[i+1]+"</p>Author:&nbsp;You &lt;your@email.com&gt;<br />Date:&nbsp;&nbsp;&nbsp;&nbsp;"+commits[i+2]+"<br /><p style='padding-left:30px'>"+commits[i]+"</p>");
   }
   return log_string;
 }
