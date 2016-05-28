@@ -13,6 +13,17 @@ $(".panel").on('keypress', ".in", function(e) {
   }
 });
 
+
+files = { "root": { "readme.txt": "-Proyecto realizado por Jose Tirado para el IES El Majuelo.", } };
+commits = [];
+commit_codes = [];
+var step = 1;
+var currentBranch = "master";
+var upperFolder = null;
+var currentFolder = files["root"];
+var path = [];
+
+
 function execute(command, parameter1, parameter2, parameter3, parameter4) {
   console.log(command, parameter1, parameter2, parameter3, parameter4);
   parameter1 = parameter1 || "";
@@ -26,24 +37,6 @@ function execute(command, parameter1, parameter2, parameter3, parameter4) {
   }
 }
 
-files = {
-  "root": {
-    "readme.txt": "-Proyecto realizado por Jose Tirado para el IES El Majuelo.",
-  }
-};
-
-commits = [];
-commit_codes = [];
-
-var step = 1;
-var currentBranch = "master";
-
-var upperFolder = null;
-var currentFolder = files["root"];
-
-var path = [];
-
-
 /* TERMINAL EVENTS */
 function ls() {
   var keys = [];
@@ -54,7 +47,6 @@ function ls() {
   }
   return keys.join(" ");
 }
-
 function cat(filename) {
   if (filename == "") {
     return "usage: cat file ...";
@@ -72,7 +64,6 @@ function cat(filename) {
     return "cat: " + filename + " : No such file or directory";
   }
 }
-
 function cd(folder) {
   if (folder == "") {
     return "";
@@ -90,7 +81,6 @@ function cd(folder) {
     return "cd: " + folder + ": No such file or directory";
   }
 }
-
 function mkdir(folderName) {
   if (folderName != "") {
     currentFolder[folderName] = {};
@@ -99,28 +89,23 @@ function mkdir(folderName) {
     return "usage: mkdir directory ...";
   }
 }
-
 function touch(fileName) {
   currentFolder[fileName] = "";
 }
-
 function echo(string) {
   return string;
 }
-
 function rm(name) {
   delete currentFolder[name]
 }
-
 function help() {
   return "Commands: ls, cd, mkdir, echo, touch, rm, cat, pwd, help";
 }
-
 function pwd() {
   if (path.length == 0) {
-    return "/"
+    return "/";
   }
-  return "/" + path.join("/")
+  return "/" + path.join("/");
 }
 
 /* END TERMINAL EVENTS */
@@ -133,7 +118,7 @@ function git(mod, mod2, mod3, mod4) {
 
   switch(mod) {
     case "init":
-      if(window.location.href.substring(46) == "1" || window.location.href.substring(46) == "") {
+      if(window.location.href.slice(-2) == "01") {
         nextStep();
         return "Initialized empty Git repository in /.git/<br />";
       } else {
@@ -141,21 +126,21 @@ function git(mod, mod2, mod3, mod4) {
       }
       break;
     case "status":
-      if(window.location.href.substring(46) < 2) {
+      if(window.location.href.slice(-2) == "01") {
         return "fatal: Not a git repository (or any of the parent directories): .git"
-      } else if(window.location.href.substring(46) == 2) {
+      } else if(window.location.href.slice(-2) == 2) {
         nextStep();
         return "On branch "+currentBranch+"<br />nothing to commit (create/copy files and use 'git add' to track)";
-      } else if (window.location.href.substring(46) == 3) {
+      } else if (window.location.href.slice(-2) == 3) {
         nextStep();
         return "On branch "+currentBranch+"<br />Untracked files:<br />&nbsp;&nbsp;(use 'git add <file>...' to include in what will be committed)<br /><p class='text-red'>test</p>no changes added to commit (use 'git add' and/or 'git commit -a')";
-      } else if (window.location.href.substring(46) == 5){
+      } else if (window.location.href.slice(-2) == 5) {
         nextStep();
         return "On branch "+currentBranch+"<br />Changes to be committed:<br /><p class='text-green'>modified:&nbsp;&nbsp;&nbsp;miFichero.txt</p>";
       }
       break;
     case "add":
-      if(window.location.href.substring(46) == 4) {
+      if(window.location.href.slice(-2) == 4) {
         if(mod2 == "'miPrimerFichero.txt'" || mod2 == "*") {
           nextStep();
           add_file("miPrimerFichero.txt", "Este es el fichero miPrimerFichero.txt");
@@ -163,8 +148,8 @@ function git(mod, mod2, mod3, mod4) {
         } else {
           return "fatal: pathspec "+mod2+" did not match any files";
         }
-      } else if(window.location.href.substring(46) == 7){
-        if(mod2 == "'*.txt'" || mod2 == "*"){
+      } else if(window.location.href.slice(-2) == 7) {
+        if(mod2 == "'*.txt'" || mod2 == "*") {
           nextStep();
           add_file("fichero1.txt", "Este es el primer fichero.");
           add_file("fichero2.txt", "Este es el segundo fichero.");
@@ -177,17 +162,17 @@ function git(mod, mod2, mod3, mod4) {
       }
       return "";
     case "commit":
-      if(window.location.href.substring(46) == 6){
-        if(mod2 == "-m" && mod3 != ""){
+      if(window.location.href.slice(-2) == 6) {
+        if(mod2 == "-m" && mod3 != "") {
           nextStep();
           add_commit(mod3);
         }
-      } else if(window.location.href.substring(46) == 8) {
+      } else if(window.location.href.slice(-2) == 8) {
         if(mod2 == "-m" && mod3 != ""){
           nextStep();
-          add_commit(mod3);
           // Generates a 7 digit Key in Hexadecimal
-          var key = (function key(gen){   return (gen += [0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f'][Math.floor(Math.random()*16)]) && (gen.length == 7) ?  gen : key(gen); })('');
+          var key = (function key(gen){ return (gen += [0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f'][Math.floor(Math.random()*16)]) && (gen.length == 7) ?  gen : key(gen); })('');
+          add_commit(mod3);
           add_commit_code(key);
           return "["+currentBranch+" "+key+"]<br /> 4 files changed, 4 insertions(+)<br /> create mode 100644 fichero1.txt<br /> create mode 100644 fichero2.txt<br /> create mode 100644 fichero3.txt<br /> create mode 100644 fichero4.txt"
         } else {
@@ -200,18 +185,18 @@ function git(mod, mod2, mod3, mod4) {
       break;
   }
 }
-function add_file(filename, filecontent){
+function add_file(filename, filecontent) {
   currentFolder[filename] = filecontent;
 }
-function add_commit(msg){
+function add_commit(msg) {
   commits.push(msg);
 }
-function add_commit_code(key){
+function add_commit_code(key) {
   commit_codes.push(key);
 }
 function nextStep() {
   step++;
-  document.location.href='http://localhost/terminal_project/index.html#/'+step;
+  document.location.href=document.location.href.substring(0, document.location.href.length-2)+("0" + step).slice(-2);
 }
 
 /* END GIT EVENTS */

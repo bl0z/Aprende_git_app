@@ -2,31 +2,31 @@
 var app = angular.module('git-app', ['ngRoute']);
 app.config(function($routeProvider){
       $routeProvider
-          .when('/', {
+          .when('/01', {
                 templateUrl: 'partials/1.html'
           })
-          .when('/2', {
+          .when('/02', {
                 templateUrl: 'partials/2.html'
           })
-          .when('/3', {
+          .when('/03', {
                 templateUrl: 'partials/3.html'
           })
-          .when('/4', {
+          .when('/04', {
                 templateUrl: 'partials/4.html'
           })
-          .when('/5', {
+          .when('/05', {
                 templateUrl: 'partials/5.html'
           })
-          .when('/6', {
+          .when('/06', {
                 templateUrl: 'partials/6.html'
           })
-          .when('/7', {
+          .when('/07', {
                 templateUrl: 'partials/7.html'
           })
-          .when('/8', {
+          .when('/08', {
                 templateUrl: 'partials/8.html'
           })
-          .when('/9', {
+          .when('/09', {
                 templateUrl: 'partials/9.html'
           })
           .when('/10', {
