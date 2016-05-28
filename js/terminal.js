@@ -155,7 +155,7 @@ function git(mod, mod2, mod3, mod4) {
           return "fatal: pathspec "+mod2.substring(1, mod2.length-1)+" did not match any files";
         }
       } else if(window.location.href.slice(-2) == 7) {
-        if(mod2 == "'*.txt'" || mod2 == "*") {
+        if(mod2 == "*.txt" || mod2 == "*") {
           nextStep();
           add_file("fichero1.txt", "Este es el primer fichero.");
           add_file("fichero2.txt", "Este es el segundo fichero.");
@@ -163,7 +163,7 @@ function git(mod, mod2, mod3, mod4) {
           add_file("fichero4.txt", "Este es el cuarto fichero.");
           return "";
         } else {
-          return "fatal: pathspec "+mod2+" did not match any files";
+          return "fatal: pathspec " + mod2 + " did not match any files";
         }
       }
       return "";
@@ -178,28 +178,37 @@ function git(mod, mod2, mod3, mod4) {
         return "missing comment";
       if(window.location.href.slice(-2) == 6) {
         nextStep();
-        // Generates a 7 digit Key in Hexadecimal
+        // Generates a 40 digit Key in Hexadecimal
         var key = (function key(gen){ return (gen += [0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f'][Math.floor(Math.random()*16)]) && (gen.length == 40) ?  gen : key(gen); })('');
         add_commit(mod3, key);
-        return "["+currentBranch+" "+key.substring(0, 7)+"]<br />&nbsp;1 file changed, 1 insertion(+)<br />&nbsp;create mode 100644 fichero1.txt"
+        return "[" + currentBranch + " " + key.substring(0, 7) + "]<br />&nbsp;1 file changed, 1 insertion(+)<br />&nbsp;create mode 100644 fichero1.txt";
       } else if(window.location.href.slice(-2) == 8) {
         nextStep();
-        // Generates a 7 digit Key in Hexadecimal
+        // Generates a 40 digit Key in Hexadecimal
         var key = (function key(gen){ return (gen += [0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f'][Math.floor(Math.random()*16)]) && (gen.length == 40) ?  gen : key(gen); })('');
         add_commit(mod3, key);
-        // add_commit_code(key);
-        return "["+currentBranch+" "+key.substring(0, 7)+"]<br />&nbsp;4 files changed, 4 insertions(+)<br />&nbsp;create mode 100644 fichero1.txt<br />&nbsp;create mode 100644 fichero2.txt<br />&nbsp;create mode 100644 fichero3.txt<br />&nbsp;create mode 100644 fichero4.txt"
+        return "[" + currentBranch + " " + key.substring(0, 7) + "]<br />&nbsp;4 files changed, 4 insertions(+)<br />&nbsp;create mode 100644 fichero1.txt<br />&nbsp;create mode 100644 fichero2.txt<br />&nbsp;create mode 100644 fichero3.txt<br />&nbsp;create mode 100644 fichero4.txt";
       }
-      return "On branch "+currentBranch+"<br />no changes added to commit";
+      return "On branch " + currentBranch + "<br />no changes added to commit";
     case "log":
       if(window.location.href.slice(-2) == 9)
         nextStep();
       return show_log();
     case "remote":
       if(window.location.href.slice(-2) == 10) {
-        if(mod2 == "add" && mod3 != "" && mod4 == "http://www.github.com/test/test.git") {
-          nextStep();
-          remoteBranch = mod3;
+        if(mod2 == "add") {
+          if(mod3 != "") {
+            if(mod4 == "http://www.github.com/test/test.git") {
+              nextStep();
+              remoteBranch = mod3;
+            } else {
+              return "This repository does not exist";
+            }
+          } else {
+            return "Local repository must be named"
+          }
+        } else {
+          return mod2 + ": subcommand not found"
         }
       }
     default:
