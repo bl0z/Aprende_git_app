@@ -15,6 +15,7 @@ $(".panel").on('keypress', ".in", function(e) {
 
 
 files = { "root": { "readme.txt": "-Proyecto realizado por Jose Tirado para el IES El Majuelo.", } };
+// commits = ["initial version", "15a3a697f872c51f4ec344554993eee8bcbe52ab", "Sat May 28 2016 15:30:00 GMT+0200 (CEST)"];
 commits = [];
 commit_codes = [];
 var step = 1;
@@ -118,7 +119,7 @@ function git(mod, mod2, mod3, mod4) {
 
   switch(mod) {
     case "init":
-      if(window.location.href.slice(-2) == "01") {
+      if(window.location.href.slice(-2) == 1) {
         nextStep();
         return "Initialized empty Git repository in /.git/<br />";
       } else {
@@ -126,7 +127,7 @@ function git(mod, mod2, mod3, mod4) {
       }
       break;
     case "status":
-      if(window.location.href.slice(-2) == "01") {
+      if(window.location.href.slice(-2) == 1) {
         return "fatal: Not a git repository (or any of the parent directories): .git"
       } else if(window.location.href.slice(-2) == 2) {
         nextStep();
@@ -141,12 +142,12 @@ function git(mod, mod2, mod3, mod4) {
       break;
     case "add":
       if(window.location.href.slice(-2) == 4) {
-        if(mod2 == "'miPrimerFichero.txt'" || mod2 == "*") {
+        if(mod2 == "holamundo.txt" || mod2 == "*") {
           nextStep();
-          add_file("miPrimerFichero.txt", "Este es el fichero miPrimerFichero.txt");
+          add_file(mod2, "Hola mundo!");
           return "";
         } else {
-          return "fatal: pathspec "+mod2+" did not match any files";
+          return "fatal: pathspec "+mod2.substring(1, mod2.length-1)+" did not match any files";
         }
       } else if(window.location.href.slice(-2) == 7) {
         if(mod2 == "'*.txt'" || mod2 == "*") {
@@ -162,34 +163,49 @@ function git(mod, mod2, mod3, mod4) {
       }
       return "";
     case "commit":
+      mod3 = mod3.substring(1, mod3.length-1);
       if(window.location.href.slice(-2) == 6) {
         if(mod2 == "-m" && mod3 != "") {
           nextStep();
-          add_commit(mod3);
+          // Generates a 7 digit Key in Hexadecimal
+          var key = (function key(gen){ return (gen += [0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f'][Math.floor(Math.random()*16)]) && (gen.length == 40) ?  gen : key(gen); })('');
+          add_commit(mod3, key);
+          return "["+currentBranch+" "+key.substring(0, 7)+"]<br />&nbsp;1 file changed, 1 insertion(+)<br />&nbsp;create mode 100644 fichero1.txt"
         }
       } else if(window.location.href.slice(-2) == 8) {
         if(mod2 == "-m" && mod3 != ""){
           nextStep();
           // Generates a 7 digit Key in Hexadecimal
-          var key = (function key(gen){ return (gen += [0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f'][Math.floor(Math.random()*16)]) && (gen.length == 7) ?  gen : key(gen); })('');
-          add_commit(mod3);
-          add_commit_code(key);
-          return "["+currentBranch+" "+key+"]<br /> 4 files changed, 4 insertions(+)<br /> create mode 100644 fichero1.txt<br /> create mode 100644 fichero2.txt<br /> create mode 100644 fichero3.txt<br /> create mode 100644 fichero4.txt"
+          var key = (function key(gen){ return (gen += [0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f'][Math.floor(Math.random()*16)]) && (gen.length == 40) ?  gen : key(gen); })('');
+          add_commit(mod3, key);
+          // add_commit_code(key);
+          return "["+currentBranch+" "+key.substring(0, 7)+"]<br />&nbsp;4 files changed, 4 insertions(+)<br />&nbsp;create mode 100644 fichero1.txt<br />&nbsp;create mode 100644 fichero2.txt<br />&nbsp;create mode 100644 fichero3.txt<br />&nbsp;create mode 100644 fichero4.txt"
         } else {
           return "Please, use 'git commit -m <comment>' instead of does not use modifier";
         }
-      } else {
-        return "On branch "+currentBranch+"<br />no changes added to commit";
       }
+      return "On branch "+currentBranch+"<br />no changes added to commit";
+    case "log":
+      alert(show_log());
+      return show_log();
     default:
       break;
   }
 }
+function show_log(){
+  var log_string = "";
+  for(i = 0; i < commits.length; i+=3) {
+    log_string+=("<p class='text-yellow'>commit "+commits[i+1]+"</p>Author:&nbsp;You &lt;your@email.com&gt;<br />Date:&nbsp;&nbsp;&nbsp;&nbsp;"+commits[i+2]+"<br /><p style='padding-left:30px'>"+commits[i]+"</p>");
+  }
+  return log_string;
+}
 function add_file(filename, filecontent) {
   currentFolder[filename] = filecontent;
 }
-function add_commit(msg) {
+function add_commit(msg, key) {
   commits.push(msg);
+  commits.push(key);
+  commits.push(new Date());
 }
 function add_commit_code(key) {
   commit_codes.push(key);
