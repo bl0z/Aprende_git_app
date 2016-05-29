@@ -15,14 +15,14 @@ $(".panel").on('keypress', ".in", function(e) {
 
 
 files = { "root": { "readme.txt": "-Proyecto realizado por Jose Tirado para el IES El Majuelo.", } };
-// commits = ["initial version", "15a3a697f872c51f4ec344554993eee8bcbe52ab", "Sat May 28 2016 15:30:00 GMT+0200 (CEST)"];
-commits = [];
+commits = ["initial version", "15a3a697f872c51f4ec344554993eee8bcbe52ab", new Date()];
+//commits = [];
 commit_codes = [];
-var step = 1;
-var pullOn = false;
-var pushOn = false;
+var step = 12;
+var pullOn = true;
+var pushOn = true;
 var currentBranch = "master";
-var remoteBranch = "";
+var remoteBranch = "origin";
 var upperFolder = null;
 var currentFolder = files["root"];
 var path = [];
@@ -118,25 +118,40 @@ function git(mod, mod2, mod3, mod4) {
       } else
         return "Reinitialized existing Git repository in /.git/";
     case "status":
-      if(window.location.href.slice(-2) == 1)
-        return "fatal: Not a git repository (or any of the parent directories): .git"
-      else if(window.location.href.slice(-2) == 2) {
-        nextStep();
-        return "On branch "+currentBranch+"<br />nothing to commit (create/copy files and use 'git add' to track)";
-      } else if (window.location.href.slice(-2) <= 4) {
-        nextStep();
-        return "On branch "+currentBranch+"<br />Untracked files:<br />&nbsp;&nbsp;(use 'git add <file>...' to include in what will be committed)<br /><p class='text-red'>test</p>no changes added to commit (use 'git add' and/or 'git commit -a')";
-      } else if (window.location.href.slice(-2) == 5) {
-        nextStep();
-        return "On branch "+currentBranch+"<br />Changes to be committed:<br /><p class='text-green'>modified:&nbsp;&nbsp;&nbsp;miFichero.txt</p>";
+      switch(window.location.href.slice(-2)) {
+        case "01":
+          return "fatal: Not a git repository (or any of the parent directories): .git"; break;
+        case "03":
+        case "04":
+          nextStep();
+          return "On branch " + currentBranch + "<br />Untracked files:<br />&nbsp;&nbsp;(use 'git add <file>...' to include in what will be committed)<br /><p class='text-red'>holamundo.txt</p>no changes added to commit (use 'git add' and/or 'git commit -a')";
+        case "05":
+        case "06":
+          nextStep();
+          return "On branch " + currentBranch + "<br />Changes to be committed:<br /><p class='text-green'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new file:&nbsp;&nbsp;holamundo.txt</p>";
+        case "07":
+          return "On branch " + currentBranch + "<br />Untracked files:<br />&nbsp;&nbsp;(use 'git add <file>...' to include in what will be committed)<br /><p class='text-red'>fichero1.txt<br />fichero2.txt<br />fichero3.txt<br />fichero4.txt</p>no changes added to commit (use 'git add' and/or 'git commit -a')";
+        case "08":
+          return "On branch " + currentBranch + "<br />Changes to be committed:<br /><p class='text-green'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new file:&nbsp;&nbsp;fichero1.txt<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new file:&nbsp;&nbsp;fichero2.txt<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new file:&nbsp;&nbsp;fichero3.txt<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new file:&nbsp;&nbsp;fichero4.txt</p>";
+        case "12":
+        case "13":
+          return "On branch " + currentBranch + "<br />&nbsp;Changes not staged for commit:<br />&nbsp;&nbsp;&nbsp;(use 'git add <file>...' to update what will be committed)<br />&nbsp;&nbsp;&nbsp;(use 'git checkout -- <file>...' to discard changes in working directory)<br /><p class='text-red'>&nbsp;&nbsp;&nbsp;&nbsp;modified:&nbsp;&nbsp;&nbsp;fichero5.txt</p><br />no changes added to commit (use 'git add' and/or 'git commit -a')";
+        case "14":
+        case "15":
+          return "On branch " + currentBranch + "<br />Changes to be committed: <br />&nbsp;&nbsp;(use 'git reset HEAD <file>...' to unstage) <br /><p class='text-green'>&nbsp;&nbsp;&nbsp;&nbsp;deleted:&nbsp;&nbsp;&nbsp;fichero1.html <br />&nbsp;&nbsp;&nbsp;&nbsp;deleted:&nbsp;&nbsp;&nbsp;fichero2.html <br />&nbsp;&nbsp;&nbsp;&nbsp;deleted:&nbsp;&nbsp;&nbsp;fichero3.html <br />&nbsp;&nbsp;&nbsp;&nbsp;deleted:&nbsp;&nbsp;&nbsp;fichero4.html <br />&nbsp;&nbsp;&nbsp;&nbsp;deleted:&nbsp;&nbsp;&nbsp;fichero5.html</p>";
+        case "02":
+          nextStep();
+        default:
+          return "On branch "+currentBranch+"<br />nothing to commit (create/copy files and use 'git add' to track)";
       }
-      break;
     case "add":
+      if (mod2.substring(0, 1) == '\"' && mod2.slice(-1) == '\"' || mod2.substring(0, 1) == "\'" && mod2.slice(-1) == '\'')
+        mod2 = mod2.substring(1, mod2.length-1);
+      else if (mod2 == "*")
+        /* DO NOTHING */;
+      else
+        return "Use quote marks to envolve the filename";
       if(window.location.href.slice(-2) == 4) {
-        if (mod2.substring(0, 1) == '"' && mod2.slice(-1) == '"' || mod2.substring(0, 1) == "'" && mod2.slice(-1) == '"')
-          mod2 = mod2.substring(1, mod2.length-1);
-        else
-          return "Use quote marks to envolve the filename";
         if(mod2 == "holamundo.txt" || mod2 == "*") {
           nextStep();
           add_file("holamundo.txt", "Hola mundo!");
@@ -156,11 +171,11 @@ function git(mod, mod2, mod3, mod4) {
       }
       return "";
     case "commit":
-      if (mod3.substring(0, 1) == '"' && mod3.slice(-1) == '"' || mod3.substring(0, 1) == "'" && mod3.slice(-1) == '"')
+      if (mod3.substring(0, 1) == '"' && mod3.slice(-1) == '"' || mod3.substring(0, 1) == "'" && mod3.slice(-1) == "'")
         mod3 = mod3.substring(1, mod3.length-1);
       else
         return "Use quote marks to envolve the comment of the commit";
-      if (mod2 == "-m")
+      if (mod2 != "-m")
         return mod2 + ": subcommand not found";
       if (mod3 == "")
         return "missing comment";
@@ -176,6 +191,17 @@ function git(mod, mod2, mod3, mod4) {
         var key = (function key(gen){ return (gen += [0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f'][Math.floor(Math.random()*16)]) && (gen.length == 40) ?  gen : key(gen); })('');
         add_commit(mod3, key);
         return "[" + currentBranch + " " + key.substring(0, 7) + "]<br />&nbsp;4 files changed, 4 insertions(+)<br />&nbsp;create mode 100644 fichero1.txt<br />&nbsp;create mode 100644 fichero2.txt<br />&nbsp;create mode 100644 fichero3.txt<br />&nbsp;create mode 100644 fichero4.txt";
+      } else if (window.location.href.slice(-2) == 14) {
+        nextStep();
+        return "commit todo borrado";
+
+
+
+// 0=========================================================================================================================================0
+        
+
+
+
       }
       return "On branch " + currentBranch + "<br />no changes added to commit";
     case "log":
@@ -186,7 +212,7 @@ function git(mod, mod2, mod3, mod4) {
       if(window.location.href.slice(-2) == 10) {
         if(mod2 == "add") {
           if(mod3 != "") {
-            if(mod4 == "http://www.github.com/test/test.git") {
+            if(mod4 == "https://www.github.com/test/test.git") {
               nextStep();
               remoteBranch = mod3;
             } else
@@ -197,15 +223,16 @@ function git(mod, mod2, mod3, mod4) {
           return mod2 + ": subcommand not found"
       }
       return "";
-    case "pull": /* COMPROBAR en LIVE */
+    case "pull":
       if(mod2 == remoteBranch) {
         if(mod3 == currentBranch) {
           if(window.location.href.slice(-2) == 11) {
             nextStep();
             pullOn = true;
+            add_file("fichero5.txt", "Este es el quinto fichero.");
             return "Updating<br /> Fast-forward<br />&nbsp;fichero5.txt&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;<color='green'>+</span><br />&nbsp;1 file changed, 1 insertion(+)<br />&nbsp;create mode 100644 fichero5.txt"; 
           } else
-            return "From https://github.com/test/test.git<br /> * branch            master     -> FETCH_HEAD<br />Already up-to-date";
+            return "From https://www.github.com/test/test.git<br /> * branch            master     -> FETCH_HEAD<br />Already up-to-date";
         } else
           return "fatal: Couldn't find remote ref " + mod3;
       } else
@@ -219,28 +246,30 @@ function git(mod, mod2, mod3, mod4) {
               pushOn = true;
               return "branch " + currentBranch + " set up to track remote branch " + currentBranch + " from " + remoteBranch; 
             } else {
-              if(pullOn == true)
-                return "To https://github.com/test/test.git <br />" + commits[commits.length-1].substring(0, 7) + ".." + commits[commits.length-1].slice(-7) + "&nbsp;&nbsp;" + currentBranch + " -&gt; " + currentBranch;
-              else
-                return "To https://github.com/test/test.git<br /> ! [rejected]        master -> master (non-fast-forward)<br />error: failed to push some refs to 'https://github.com/test/test.git'<br />hint: Updates were rejected because the tip of your current branch is behind<br />hint: its remote counterpart. Merge the remote changes (e.g. 'git pull')<br />hint: before pushing again";
+              if(pullOn == true) {
+                if(window.location.href.slice(-2) == 15)
+                  nextStep();
+                return "To https://www.github.com/test/test.git <br />" + commits[commits.length-2].substring(0, 7) + ".." + commits[commits.length-2].slice(-7) + "&nbsp;&nbsp;" + currentBranch + " -&gt; " + currentBranch;
+              } else
+                return "To https://www.github.com/test/test.git<br /> ! [rejected]        master -> master (non-fast-forward)<br />error: failed to push some refs to 'https://www.github.com/test/test.git'<br />hint: Updates were rejected because the tip of your current branch is behind its remote counterpart. Merge the remote changes (e.g. 'git pull') before pushing again";
             } 
           } else
-            return "error: src refspec " + mod4 + " does not match any.<br />error: failed to push some refs to 'https://github.com/test/test.git'";
-            }
+            return "error: src refspec " + mod4 + " does not match any.<br />error: failed to push some refs to 'https://www.github.com/test/test.git'";
         } else
           return "fatal: '" + mod3 + "' does not appear to be a git repository<br />fatal: Could not read from remote repository.<br />Please make sure you have the correct access rights and the repository exists";
-      } else if (mod2 == "" && pushOn == true)
-        return "To https://github.com/test/test.git <br />" + commits[commits.length-1].substring(0, 7) + ".." + commits[commits.length-1].slice(-7) + "&nbsp;&nbsp;" + currentBranch + " -&gt; " + currentBranch;
-      } else {
-        return mod2 + ": subcommand not found";
-      }
+      } else if (mod2 == "" && pushOn == true) {
+        if(window.location.href.slice(-2) == 15)
+          nextStep();
+        return "To https://www.github.com/test/test.git <br />" + commits[commits.length-2].substring(0, 7) + ".." + commits[commits.length-2].slice(-7) + "&nbsp;&nbsp;" + currentBranch + " -&gt; " + currentBranch;
+      } else
+        return "You must use 'git push -u &lt;remote repository&gt;&lt;branch&gt;' once before use 'git push'";
     case "rm": /*COMPROBAR en LIVE */
-      if(window.location.href.slice(-2) == 12)
+      if(window.location.href.slice(-2) == 13)
         nextStep();
       rm(mod2);
       return "rm applied";
     default:
-      break;
+      return mod + ": command not found";
   }
 }
 function show_log() {
@@ -263,7 +292,7 @@ function add_commit_code(key) {
 }
 function nextStep() {
   step++;
-  document.location.href=document.location.href.substring(0, document.location.href.length-2)+("0" + step).slice(-2);
+  document.location.href = document.location.href.substring(0, document.location.href.length-2) + ("0" + step).slice(-2);
 }
 
 /* END GIT EVENTS */

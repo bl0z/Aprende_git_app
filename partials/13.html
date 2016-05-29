@@ -1,6 +1,6 @@
-<h2>1.13 Differences</h2>
-<p>Uh oh, looks like there have been some additions and changes to the octocat family. Let's take a look at what is different from our last commit by using the git diff command.</p>
+<h2>1.20 Removing All The Things</h2>
+<p>Ok, so you're in the clean_up branch. You can finally remove all those pesky octocats by using the git rm command which will not only remove the actual files from disk, but will also stage the removal of the files for us.</p>
 
-<p>In this case we want the diff of our most recent commit, which we can refer to using the HEAD pointer.</p>
+<p>You're going to want to use a wildcard again to get all the octocats in one sweep, go ahead and run:</p>
 
-<code>git diff HEAD</code>
+<code>git rm '*.txt'</code>
