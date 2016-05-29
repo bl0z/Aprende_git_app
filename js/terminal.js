@@ -19,6 +19,7 @@ files = { "root": { "readme.txt": "-Proyecto realizado por Jose Tirado para el I
 commits = [];
 commit_codes = [];
 var step = 1;
+var pullOn = false;
 var pushOn = false;
 var currentBranch = "master";
 var remoteBranch = "";
@@ -201,16 +202,14 @@ function git(mod, mod2, mod3, mod4) {
         if(mod3 == currentBranch) {
           if(window.location.href.slice(-2) == 11) {
             nextStep();
+            pullOn = true;
             return "Updating<br /> Fast-forward<br />&nbsp;fichero5.txt&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;<color='green'>+</span><br />&nbsp;1 file changed, 1 insertion(+)<br />&nbsp;create mode 100644 fichero5.txt"; 
-          } else {
-            /* COMPROBAR */
-          }
-        } else {
-          /* Si no es "MASTER" */
-        }
-      } else {
-        /* Si no es "ORIGIN" */
-      }
+          } else
+            return "From https://github.com/test/test.git<br /> * branch            master     -> FETCH_HEAD<br />Already up-to-date";
+        } else
+          return "fatal: Couldn't find remote ref " + mod3;
+      } else
+        return "fatal: '" + mod2 + "' does not appear to be a git repository<br />fatal: Could not read from remote repository.<br />Please make sure you have the correct access rights and the repository exists";
     case "push": /* COMPROBAR en LIVE */
       if(mod2 == "-u") {
         if(mod3 == remoteBranch) {
@@ -220,14 +219,16 @@ function git(mod, mod2, mod3, mod4) {
               pushOn = true;
               return "branch " + currentBranch + " set up to track remote branch " + currentBranch + " from " + remoteBranch; 
             } else {
-              /* COMPROBAR */
+              if(pullOn == true)
+                return "To https://github.com/test/test.git <br />" + commits[commits.length-1].substring(0, 7) + ".." + commits[commits.length-1].slice(-7) + "&nbsp;&nbsp;" + currentBranch + " -&gt; " + currentBranch;
+              else
+                return "To https://github.com/test/test.git<br /> ! [rejected]        master -> master (non-fast-forward)<br />error: failed to push some refs to 'https://github.com/test/test.git'<br />hint: Updates were rejected because the tip of your current branch is behind<br />hint: its remote counterpart. Merge the remote changes (e.g. 'git pull')<br />hint: before pushing again";
+            } 
+          } else
+            return "error: src refspec " + mod4 + " does not match any.<br />error: failed to push some refs to 'https://github.com/test/test.git'";
             }
-          } else {
-            /* Si no es "MASTER" */
-          }
-        } else {
-          /* Si no es "ORIGIN" */
-        }
+        } else
+          return "fatal: '" + mod3 + "' does not appear to be a git repository<br />fatal: Could not read from remote repository.<br />Please make sure you have the correct access rights and the repository exists";
       } else if (mod2 == "" && pushOn == true)
         return "To https://github.com/test/test.git <br />" + commits[commits.length-1].substring(0, 7) + ".." + commits[commits.length-1].slice(-7) + "&nbsp;&nbsp;" + currentBranch + " -&gt; " + currentBranch;
       } else {
