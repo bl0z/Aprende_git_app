@@ -18,11 +18,11 @@ files = { "root": { "readme.txt": "-Proyecto realizado por Jose Tirado para el I
 commits = ["initial version", "15a3a697f872c51f4ec344554993eee8bcbe52ab", new Date()];
 //commits = [];
 commit_codes = [];
-var step = 12;
-var pullOn = true;
-var pushOn = true;
+var step = 1;
+var pullOn = false;
+var pushOn = false;
 var currentBranch = "master";
-var remoteBranch = "origin";
+var remoteBranch = "";
 var upperFolder = null;
 var currentFolder = files["root"];
 var path = [];
@@ -137,7 +137,6 @@ function git(mod, mod2, mod3, mod4) {
         case "13":
           return "On branch " + currentBranch + "<br />&nbsp;Changes not staged for commit:<br />&nbsp;&nbsp;&nbsp;(use 'git add <file>...' to update what will be committed)<br />&nbsp;&nbsp;&nbsp;(use 'git checkout -- <file>...' to discard changes in working directory)<br /><p class='text-red'>&nbsp;&nbsp;&nbsp;&nbsp;modified:&nbsp;&nbsp;&nbsp;fichero5.txt</p><br />no changes added to commit (use 'git add' and/or 'git commit -a')";
         case "14":
-        case "15":
           return "On branch " + currentBranch + "<br />Changes to be committed: <br />&nbsp;&nbsp;(use 'git reset HEAD <file>...' to unstage) <br /><p class='text-green'>&nbsp;&nbsp;&nbsp;&nbsp;deleted:&nbsp;&nbsp;&nbsp;fichero1.html <br />&nbsp;&nbsp;&nbsp;&nbsp;deleted:&nbsp;&nbsp;&nbsp;fichero2.html <br />&nbsp;&nbsp;&nbsp;&nbsp;deleted:&nbsp;&nbsp;&nbsp;fichero3.html <br />&nbsp;&nbsp;&nbsp;&nbsp;deleted:&nbsp;&nbsp;&nbsp;fichero4.html <br />&nbsp;&nbsp;&nbsp;&nbsp;deleted:&nbsp;&nbsp;&nbsp;fichero5.html</p>";
         case "02":
           nextStep();
@@ -184,24 +183,19 @@ function git(mod, mod2, mod3, mod4) {
         // Generates a 40 digit Key in Hexadecimal
         var key = (function key(gen){ return (gen += [0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f'][Math.floor(Math.random()*16)]) && (gen.length == 40) ?  gen : key(gen); })('');
         add_commit(mod3, key);
-        return "[" + currentBranch + " " + key.substring(0, 7) + "]<br />&nbsp;1 file changed, 1 insertion(+)<br />&nbsp;create mode 100644 fichero1.txt";
+        return "[" + currentBranch + " " + key.substring(0, 7) + "] " + commits[commits.length-3] + "<br />&nbsp;1 file changed, 1 insertion(+)<br />&nbsp;create mode 100644 fichero1.txt";
       } else if(window.location.href.slice(-2) == 8) {
         nextStep();
         // Generates a 40 digit Key in Hexadecimal
         var key = (function key(gen){ return (gen += [0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f'][Math.floor(Math.random()*16)]) && (gen.length == 40) ?  gen : key(gen); })('');
         add_commit(mod3, key);
-        return "[" + currentBranch + " " + key.substring(0, 7) + "]<br />&nbsp;4 files changed, 4 insertions(+)<br />&nbsp;create mode 100644 fichero1.txt<br />&nbsp;create mode 100644 fichero2.txt<br />&nbsp;create mode 100644 fichero3.txt<br />&nbsp;create mode 100644 fichero4.txt";
+        return "[" + currentBranch + " " + key.substring(0, 7) + "] " + commits[commits.length-3] + "<br />&nbsp;4 files changed, 4 insertions(+)<br />&nbsp;create mode 100644 fichero1.txt<br />&nbsp;create mode 100644 fichero2.txt<br />&nbsp;create mode 100644 fichero3.txt<br />&nbsp;create mode 100644 fichero4.txt";
       } else if (window.location.href.slice(-2) == 14) {
         nextStep();
-        return "commit todo borrado";
-
-
-
-// 0=========================================================================================================================================0
-        
-
-
-
+        // Generates a 40 digit Key in Hexadecimal
+        var key = (function key(gen){ return (gen += [0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f'][Math.floor(Math.random()*16)]) && (gen.length == 40) ?  gen : key(gen); })('');
+        add_commit(mod3, key);
+        return "[" + currentBranch + " " + key.substring(0, 7) + "] " + commits[commits.length-3] + "<br />&nbsp;5 files changed, 5 deletions(+)<br />&nbsp;delete mode 100644 fichero1.txt<br />&nbsp;delete mode 100644 fichero2.txt<br />&nbsp;delete mode 100644 fichero3.txt<br />&nbsp;delete mode 100644 fichero4.txt<br />&nbsp;delete mode 100644 fichero5.txt";
       }
       return "On branch " + currentBranch + "<br />no changes added to commit";
     case "log":
@@ -226,7 +220,7 @@ function git(mod, mod2, mod3, mod4) {
     case "pull":
       if(mod2 == remoteBranch) {
         if(mod3 == currentBranch) {
-          if(window.location.href.slice(-2) == 11) {
+          if(window.location.href.slice(-2) == 12) {
             nextStep();
             pullOn = true;
             add_file("fichero5.txt", "Este es el quinto fichero.");
@@ -237,11 +231,11 @@ function git(mod, mod2, mod3, mod4) {
           return "fatal: Couldn't find remote ref " + mod3;
       } else
         return "fatal: '" + mod2 + "' does not appear to be a git repository<br />fatal: Could not read from remote repository.<br />Please make sure you have the correct access rights and the repository exists";
-    case "push": /* COMPROBAR en LIVE */
+    case "push":
       if(mod2 == "-u") {
         if(mod3 == remoteBranch) {
           if(mod4 == currentBranch) {
-            if(window.location.href.slice(-2) == 12) {
+            if(window.location.href.slice(-2) == 13) {
               nextStep();
               pushOn = true;
               return "branch " + currentBranch + " set up to track remote branch " + currentBranch + " from " + remoteBranch; 
@@ -263,7 +257,7 @@ function git(mod, mod2, mod3, mod4) {
         return "To https://www.github.com/test/test.git <br />" + commits[commits.length-2].substring(0, 7) + ".." + commits[commits.length-2].slice(-7) + "&nbsp;&nbsp;" + currentBranch + " -&gt; " + currentBranch;
       } else
         return "You must use 'git push -u &lt;remote repository&gt;&lt;branch&gt;' once before use 'git push'";
-    case "rm": /*COMPROBAR en LIVE */
+    case "rm":
       if(window.location.href.slice(-2) == 13)
         nextStep();
       rm(mod2);
