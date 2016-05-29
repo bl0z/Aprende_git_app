@@ -133,7 +133,6 @@ function git(mod, mod2, mod3, mod4) {
           return "On branch " + currentBranch + "<br />Untracked files:<br />&nbsp;&nbsp;(use 'git add <file>...' to include in what will be committed)<br /><p class='text-red'>fichero1.txt<br />fichero2.txt<br />fichero3.txt<br />fichero4.txt</p>no changes added to commit (use 'git add' and/or 'git commit -a')";
         case "08":
           return "On branch " + currentBranch + "<br />Changes to be committed:<br /><p class='text-green'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new file:&nbsp;&nbsp;fichero1.txt<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new file:&nbsp;&nbsp;fichero2.txt<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new file:&nbsp;&nbsp;fichero3.txt<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new file:&nbsp;&nbsp;fichero4.txt</p>";
-        case "12":
         case "13":
           return "On branch " + currentBranch + "<br />&nbsp;Changes not staged for commit:<br />&nbsp;&nbsp;&nbsp;(use 'git add <file>...' to update what will be committed)<br />&nbsp;&nbsp;&nbsp;(use 'git checkout -- <file>...' to discard changes in working directory)<br /><p class='text-red'>&nbsp;&nbsp;&nbsp;&nbsp;modified:&nbsp;&nbsp;&nbsp;fichero5.txt</p><br />no changes added to commit (use 'git add' and/or 'git commit -a')";
         case "14":
@@ -235,7 +234,7 @@ function git(mod, mod2, mod3, mod4) {
       if(mod2 == "-u") {
         if(mod3 == remoteBranch) {
           if(mod4 == currentBranch) {
-            if(window.location.href.slice(-2) == 13) {
+            if(window.location.href.slice(-2) == 11) {
               nextStep();
               pushOn = true;
               return "branch " + currentBranch + " set up to track remote branch " + currentBranch + " from " + remoteBranch; 
