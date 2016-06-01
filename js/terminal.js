@@ -34,7 +34,7 @@ function execute(command, parameter1, parameter2, parameter3, parameter4) {
   parameter2 = parameter2 || "";
   parameter3 = parameter3 || "";
   parameter4 = parameter4 || "";
-  if(command != "cd" || command != "mkdir" || command != "touch" || command != "rm" || command != "pwd")
+  if(command != "cd" && command != "mkdir" && command != "touch" && command != "rm" && command != "pwd")
     if(window[command]) 
       return window[command](parameter1, parameter2, parameter3, parameter4);
   return command + ": command not found";
@@ -94,7 +94,7 @@ function rm(name) {
   delete currentFolder[name]
 }
 function help() {
-  return "Commands: ls, cd, mkdir, echo, touch, rm, cat, pwd, help";
+  return "Commands: ls, echo, cat, help";
 }
 function pwd() {
   if (path.length == 0)
@@ -149,7 +149,9 @@ function git(mod, mod2, mod3, mod4) {
         /* DO NOTHING */;
       else
         return "Use quote marks to envolve the filename";
-      if(window.location.href.slice(-2) == 4) {
+      if (window.location.href.slice(-2) == 1)
+         return "fatal: Not a git repository (or any of the parent directories): .git";
+      else if(window.location.href.slice(-2) == 4) {
         if(mod2 == "holamundo.txt" || mod2 == "*") {
           nextStep();
           add_file("holamundo.txt", "Hola mundo!");
@@ -177,7 +179,9 @@ function git(mod, mod2, mod3, mod4) {
         return mod2 + ": subcommand not found";
       if (mod3 == "")
         return "missing comment";
-      if(window.location.href.slice(-2) == 6) {
+      if (window.location.href.slice(-2) == 1)
+         return "fatal: Not a git repository (or any of the parent directories): .git";
+      else if(window.location.href.slice(-2) == 6) {
         nextStep();
         // Generates a 40 digit Key in Hexadecimal
         var key = (function key(gen){ return (gen += [0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f'][Math.floor(Math.random()*16)]) && (gen.length == 40) ?  gen : key(gen); })('');
@@ -198,11 +202,15 @@ function git(mod, mod2, mod3, mod4) {
       }
       return "On branch " + currentBranch + "<br />no changes added to commit";
     case "log":
-      if(window.location.href.slice(-2) == 9)
+      if (window.location.href.slice(-2) == 1)
+         return "fatal: Not a git repository (or any of the parent directories): .git";
+      else if(window.location.href.slice(-2) == 9)
         nextStep();
       return show_log();
     case "remote":
-      if(window.location.href.slice(-2) == 10) {
+      if (window.location.href.slice(-2) == 1)
+         return "fatal: Not a git repository (or any of the parent directories): .git";
+      else if(window.location.href.slice(-2) == 10) {
         if(mod2 == "add") {
           if(mod3 != "") {
             if(mod4 == "https://www.github.com/test/test.git") {
@@ -219,7 +227,9 @@ function git(mod, mod2, mod3, mod4) {
     case "pull":
       if(mod2 == remoteBranch) {
         if(mod3 == currentBranch) {
-          if(window.location.href.slice(-2) == 12) {
+          if (window.location.href.slice(-2) == 1)
+            return "fatal: Not a git repository (or any of the parent directories): .git";
+          else if(window.location.href.slice(-2) == 12) {
             nextStep();
             pullOn = true;
             add_file("fichero5.txt", "Este es el quinto fichero.");
@@ -234,7 +244,9 @@ function git(mod, mod2, mod3, mod4) {
       if(mod2 == "-u") {
         if(mod3 == remoteBranch) {
           if(mod4 == currentBranch) {
-            if(window.location.href.slice(-2) == 11) {
+            if (window.location.href.slice(-2) == 1)
+              return "fatal: Not a git repository (or any of the parent directories): .git";
+            else if(window.location.href.slice(-2) == 11) {
               nextStep();
               pushOn = true;
               return "branch " + currentBranch + " set up to track remote branch " + currentBranch + " from " + remoteBranch; 
@@ -257,7 +269,9 @@ function git(mod, mod2, mod3, mod4) {
       } else
         return "You must use 'git push -u &lt;remote repository&gt;&lt;branch&gt;' once before use 'git push'";
     case "rm":
-      if(window.location.href.slice(-2) == 13)
+      if (window.location.href.slice(-2) == 1)
+        return "fatal: Not a git repository (or any of the parent directories): .git";
+      else if(window.location.href.slice(-2) == 13)
         nextStep();
       rm(mod2);
       return "rm applied";
