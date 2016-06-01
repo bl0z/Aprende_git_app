@@ -91,6 +91,8 @@ function echo(string) {
   return string;
 }
 function rm(name) {
+  if (name == '*' || name == "\'*\'" || name == '\"*\"')
+    currentFolder = [];
   delete currentFolder[name]
 }
 function help() {
@@ -254,9 +256,9 @@ function git(mod, mod2, mod3, mod4) {
               if(pullOn == true) {
                 if(window.location.href.slice(-2) == 15)
                   nextStep();
-                return "To https://www.github.com/test/test.git <br />" + commits[commits.length-2].substring(0, 7) + ".." + commits[commits.length-2].slice(-7) + "&nbsp;&nbsp;" + currentBranch + " -&gt; " + currentBranch;
+                return "To https://www.github.com/test/test.git<br />" + commits[commits.length-2].substring(0, 7) + ".." + commits[commits.length-2].slice(-7) + "&nbsp;&nbsp;" + currentBranch + " -&gt; " + currentBranch;
               } else
-                return "To https://www.github.com/test/test.git<br /> ! [rejected]        master -> master (non-fast-forward)<br />error: failed to push some refs to 'https://www.github.com/test/test.git'<br />hint: Updates were rejected because the tip of your current branch is behind its remote counterpart. Merge the remote changes (e.g. 'git pull') before pushing again";
+                return "To https://www.github.com/test/test.git<br />! [rejected]        master -> master (non-fast-forward)<br />error: failed to push some refs to 'https://www.github.com/test/test.git'<br />hint: Updates were rejected because the tip of your current branch is behind its remote counterpart. Merge the remote changes (e.g. 'git pull') before pushing again";
             } 
           } else
             return "error: src refspec " + mod4 + " does not match any.<br />error: failed to push some refs to 'https://www.github.com/test/test.git'";
@@ -271,10 +273,12 @@ function git(mod, mod2, mod3, mod4) {
     case "rm":
       if (window.location.href.slice(-2) == 1)
         return "fatal: Not a git repository (or any of the parent directories): .git";
-      else if(window.location.href.slice(-2) == 13)
+      else if(window.location.href.slice(-2) == 13) {
         nextStep();
-      rm(mod2);
-      return "rm applied";
+        rm(mod2);
+        return "Some files are removed";
+      } else
+        return mod2 + ": command can not be used now";
     default:
       return mod + ": command not found";
   }
