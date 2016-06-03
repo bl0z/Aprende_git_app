@@ -1,3 +1,10 @@
+/*!
+ * Project Name: Aprende a usar Git (http://github.com/bl0z/Aprende_git_app.git)
+ * Filename: script.js
+ * Author: Jose Tirado;
+ * Licensed under MIT (https://github.com/bl0z/Aprende_git_app/LICENSE)
+ * This file contains the script for AngularJS.
+ */
 'use strict';
 var app = angular.module('git-app', ['ngRoute']);
 app.config(function($routeProvider){

@@ -1,3 +1,16 @@
+/**
+  * Project Name: Aprende a usar Git (http://github.com/bl0z/Aprende_git_app.git)
+  * Filename: terminal.js
+  * Author: Jose Tirado;
+  * Licensed under MIT (https://github.com/bl0z/Aprende_git_app/LICENSE)
+  * This file contains all script for the tutorials' terminal
+  */
+
+/**
+  * Check if the key pressed is ENTER
+  * If ENTER is pressed, split the string of the input and calls execute with the array as params
+  * Params: e (Key pressed)
+*/
 $(".panel").on('keypress', ".in", function(e) {
   if (e.which == 13) {
     $(this).prop('readonly', true);
@@ -11,7 +24,7 @@ $(".panel").on('keypress', ".in", function(e) {
     $(".panel").append($("<div class='action'>").html("<div class='action'><div class='command'><span class='symbol'>$</span><input class='in' type='text'></div><div class='output'></div></div>"));
     $(".in").last().focus();
   }
-});
+}); // end function()
 
 
 files = { "root": { "readme.txt": "-Proyecto realizado por Jose Tirado para el IES El Majuelo.", } };
@@ -27,7 +40,11 @@ var upperFolder = null;
 var currentFolder = files["root"];
 var path = [];
 
-
+/**
+  * This funcion check the input string and calls the correct function for the command
+  * Params: command and 4 optional modifiers
+  * Return: a string that will be shown in the terminal with the result of the command
+*/
 function execute(command, parameter1, parameter2, parameter3, parameter4) {
   // console.log(command, parameter1, parameter2, parameter3, parameter4);
   parameter1 = parameter1 || "";
@@ -38,9 +55,13 @@ function execute(command, parameter1, parameter2, parameter3, parameter4) {
     if(window[command]) 
       return window[command](parameter1, parameter2, parameter3, parameter4);
   return command + ": command not found";
-}
+} // end execute()
+
 
 /* TERMINAL EVENTS */
+/**
+  * Show currently files
+*/
 function ls() {
   var keys = [];
   for (var key in currentFolder) {
@@ -48,7 +69,14 @@ function ls() {
       keys.push(key);
   }
   return keys.join(" ");
-}
+} // end ls()
+
+
+/**
+  * Check if it is a directory or file or not. If it is a folder, shows a default message. If it is a file, shows the content of the file. If not, shows a default message
+  * Params: the filename that should be checked
+  * Return: a string that will be shown in the terminal with the result of the command
+*/
 function cat(filename) {
   if (filename == "")
     return "usage: cat file ...";
@@ -60,7 +88,14 @@ function cat(filename) {
     return currentFolder[filename];
   else
     return "cat: " + filename + " : No such file or directory";
-}
+} // end cat()
+
+
+/**
+  * Private function that allows you to move for the tree folder
+  * Params: the folder target
+  * Return: a string that will be shown in the terminal with the result of the command
+*/
 function cd(folder) {
   if (folder == "") {
     return "";
@@ -76,36 +111,78 @@ function cd(folder) {
     path.push(folder);
   } else
     return "cd: " + folder + ": No such file or directory";
-}
+} // end cd()
+
+
+/**
+  * Private function that allows you to create a new directory in your current folder
+  * Params: the filename that should be checked
+  * Return: a string that will be shown in the terminal with the result of the command
+*/
 function mkdir(folderName) {
   if (folderName != "") {
     currentFolder[folderName] = {};
     return "";
   } else
     return "usage: mkdir directory ...";
-}
+} // end mkdir()
+
+
 function touch(fileName) {
   currentFolder[fileName] = "";
-}
+} // end touch()
+
+
+/**
+  * Function that return the param
+  * Params: a string
+  * Return: param will be shown in the terminal
+*/
 function echo(string) {
   return string;
-}
+} // end echo()
+
+
+/**
+  * Private function that delete files in your current folder
+  * Params: the filename that should be deleted
+*/
 function rm(name) {
   if (name == '*' || name == "\'*\'" || name == '\"*\"')
     currentFolder = [];
   delete currentFolder[name]
-}
+} // end rm()
+
+
+/**
+  * Show which commands are available by user
+  * Return: a string that contains every command available by user that will be shown in the terminal
+*/
 function help() {
   return "Commands: ls, echo, cat, help";
-}
+} // end help()
+
+
+/**
+  * Private function that shows your current folder
+  * Return: a string that contains your current folder that will be shown in the terminal
+*/
 function pwd() {
   if (path.length == 0)
     return "/";
   return "/" + path.join("/");
-}
+} // end pwd()
+
+
 /* END TERMINAL EVENTS */
 
+
 /* GIT EVENTS */
+/**
+  * The Git command function that check every parameter and do something in the right way
+  * Params: optional parameters for every git command
+  * Return: a string that will be shown in the terminal with the result of the command
+*/
 function git(mod, mod2, mod3, mod4) {
   mod = mod || "";
   mod2 = mod2 || "";
@@ -282,32 +359,63 @@ function git(mod, mod2, mod3, mod4) {
     default:
       return mod + ": command not found";
   }
-}
+} // end git()
+
+
+/**
+  * Shows the current git log
+  * Return: a string that will be shown in the terminal with the result of the command
+*/
 function show_log() {
   var log_string = "";
   for(i = 0; i < commits.length; i += 3) {
     log_string += ("<p class='text-yellow'>commit "+commits[i+1]+"</p>Author:&nbsp;You &lt;your@email.com&gt;<br />Date:&nbsp;&nbsp;&nbsp;&nbsp;"+commits[i+2]+"<br /><p style='padding-left:30px'>"+commits[i]+"</p>");
   }
   return log_string;
-}
+} // end show_log()
+
+
+/**
+  * Create a file in your current folder
+  * Params: parameter1 is filename and contain the file name; parameter2 is filecontent and contains the content of the folder
+*/
 function add_file(filename, filecontent) {
   currentFolder[filename] = filecontent;
-}
+} // end add_file()
+
+
+/**
+  * Create a new commit entry
+  * Params: parameter1 is the message of the commit; parameter2 is the commit key
+*/
 function add_commit(msg, key) {
   commits.push(msg);
   commits.push(key);
   commits.push(new Date());
-}
+} // end add_commit()
+
+
+
+/* NOT USED */
 function add_commit_code(key) {
   commit_codes.push(key);
-}
+} // end add_commit_code()
+
+
+
+/**
+  * Move the count of the step and redirect to the next page of the tutorial
+*/
 function nextStep() {
   step++;
   document.location.href = document.location.href.substring(0, document.location.href.length-2) + ("0" + step).slice(-2);
-}
+} // end nextStep()
+
 
 /* END GIT EVENTS */
 
+
+// Scrollbar of the terminal
 $('.panel').stop().animate({
   scrollTop: $(".panel")[0].scrollHeight
 }, 200);
