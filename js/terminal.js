@@ -148,8 +148,8 @@ function echo(string) {
   * Params: the filename that should be deleted
 */
 function rm(name) {
-  if (name == '*' || name == "\'*\'" || name == '\"*\"')
-    currentFolder = [];
+  if (name == '*' || name == "\'*\'" || name == '\"*\"' || name == '*.txt')
+    currentFolder = {};
   delete currentFolder[name]
 } // end rm()
 
@@ -292,7 +292,7 @@ function git(mod, mod2, mod3, mod4) {
       else if(window.location.href.slice(-2) == 10) {
         if(mod2 == "add") {
           if(mod3 != "") {
-            if(mod4 == "https://www.github.com/test/test.git") {
+            if(mod4 == "https://github.com/test/test.git") {
               nextStep();
               remoteBranch = mod3;
             } else
