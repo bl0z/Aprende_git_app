@@ -51,7 +51,7 @@ function execute(command, parameter1, parameter2, parameter3, parameter4) {
   parameter2 = parameter2 || "";
   parameter3 = parameter3 || "";
   parameter4 = parameter4 || "";
-  if(command != "cd" && command != "mkdir" && command != "touch" && command != "" && command != "pwd")
+  if(command != "cd" && command != "mkdir" && command != "touch" && command != "rm" && command != "pwd")
     if(window[command]) 
       return window[command](parameter1, parameter2, parameter3, parameter4);
   return command + ": command not found";
